@@ -1,0 +1,29 @@
+<ion-view view-title="Home">
+  <ion-content class="padding" ng-controller="HomeCtrl">
+    <h2>CoastRide</h2>
+    <div ng-show="isLogged()">
+    	Bevenuto!
+    </div>
+    <div ng-hide="isLogged()">
+        <div class="col-md-6 col-md-offset-3">
+            <h2>Accedi</h2>
+            <form name="form" ng-submit="doLogin()" role="form">
+                <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" ng-model="username" required />
+                    <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username obbligatorio</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" ng-model="password" required />
+                    <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password obbligatorio</span>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">Login</button>
+                    <a href="#/register" class="btn btn-link">Registrati</a>
+                </div>
+            </form>
+        </div>
+    </div>
+  </ion-content>
+</ion-view>

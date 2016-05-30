@@ -1,0 +1,14 @@
+<ion-view view-title="Travels">
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="travel in travels" type="item-text-wrap" href="#/tab/travel/{{travel.id}}">
+        <h3>{{travel.from}} {{travel.to}} <br />{{travel.date}}</h3>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button class="button-assertive" ng-click="remove(travel)">
+          Delete
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

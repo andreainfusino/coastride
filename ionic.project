@@ -1,4 +1,14 @@
 {
   "name": "coastride",
-  "app_id": ""
+  "app_id": "",
+    "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://coastride.andreainfusino.com/api-token-auth/"
+    },
+	{
+      "path": "/rest",
+      "proxyUrl": "http://coastride.andreainfusino.com/coastride/"
+    }
+  ]
 }
