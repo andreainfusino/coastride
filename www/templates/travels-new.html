@@ -1,0 +1,165 @@
+<ion-view view-title="New Travel">
+  <ion-content ng-controller="TravelsCtrl as newTravel">
+    <ng-form name="newTravelForm">
+    	<div class="list">
+            <div class="item item-divider">
+            Departure
+            </div>
+            <div class="item item-input">
+            	<label>
+                    <input type="text" name="partenza" ng-model="newTravel.data.partenza" placeholder="From" required>
+                </label>
+                <div role="alert">
+                  <span class="error" ng-show="newTravel.data.partenza.$dirty && newTravel.data.partenza.$error.required">
+                   Required!</span>
+                </div>
+            </div>
+            <div class="item item-input">
+            	<label>
+                    <input type="date" name="data_partenza_tmp" ng-model="newTravel.data.data_partenza_tmp" required>
+                </label>
+                <div role="alert">
+                  <span class="error" ng-show="newTravel.data.data_partenza_tmp.$dirty && newTravel.data.data_partenza_tmp.$error.required">
+                   Required!</span>
+                </div>
+            </div>
+            <div class="item item-input">
+                <label>
+                    <input type="text" name="ora_partenza" ng-model="newTravel.data.ora_partenza" placeholder="Hour" required>
+                </label>
+                <div role="alert">
+                  <span class="error" ng-show="newTravel.data.ora_partenza.$dirty && newTravel.data.ora_partenza.$error.required">
+                   Required!</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="list">
+            <div class="item item-divider">
+            Arrival
+            </div>
+            <div class="item item-input">
+                <label>
+                    <input type="text" name="arrivo" ng-model="newTravel.data.arrivo" placeholder="To" required>
+                </label>
+                <div role="alert">
+                  <span class="error" ng-show="newTravel.data.arrivo.$dirty && newTravel.data.arrivo.$error.required">
+                   Required!</span>
+                </div>
+            </div>
+            <div class="item item-input">
+                <label>
+                    <input type="date" name="data_arrivo_tmp" ng-model="newTravel.data.data_arrivo_tmp" required>
+                </label>
+                <div role="alert">
+                  <span class="error" ng-show="newTravel.data.data_arrivo_tmp.$dirty && newTravel.data.data_arrivo_tmp.$error.required">
+                   Required!</span>
+                </div>
+            </div>
+            <div class="item item-input">
+                <label>
+                    <input type="text" name="ora_arrivo" ng-model="newTravel.data.ora_arrivo" placeholder="Hour" required>
+                </label>
+                <div role="alert">
+                  <span class="error" ng-show="newTravel.data.ora_arrivo.$dirty && newTravel.data.ora_arrivo.$error.required">
+                   Required!</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="list">
+            <div class="item item-divider">
+            Details
+            </div>
+            <div class="item item-input">
+                <label>
+                    <input type="number" name="numero_passeggeri" ng-model="newTravel.data.numero_passeggeri" min="0" max="4" style="width: 200px;" placeholder="Passengers" required>
+                </label>
+                <div role="alert">
+                  <span class="error" ng-show="newTravel.data.numero_passeggeri.$dirty && newTravel.data.numero_passeggeri.$error.required">
+                   Required!</span>
+                </div>
+            </div>
+            <div class="item item-input">
+                <label>
+                    <input type="number" name="numero_bagagli" ng-model="newTravel.data.numero_bagagli" min="0" max="4" style="width: 200px;" placeholder="Baggages" required>
+                </label>
+                <div role="alert">
+                  <span class="error" ng-show="newTravel.data.numero_bagagli.$dirty && newTravel.data.numero_bagagli.$error.required">
+                   Required!</span>
+                </div>
+            </div>
+        </div>
+        
+        <input type="hidden" name="is_richiesta" ng-model="newTravel.data.is_richiesta" value="false">
+        <input type="hidden" name="is_fumatore" ng-model="newTravel.data.is_fumatore" value="false">
+        <input type="hidden" name="costo" ng-model="newTravel.data.costo" value="0">
+        <input type="hidden" name="valuta" ng-model="newTravel.data.valuta" value="Eur">
+        <input type="hidden" name="tempo_totale" ng-model="newTravel.data.tempo_totale" value="0">
+        <input type="hidden" name="km_totale" ng-model="newTravel.data.km_totale" value="0">
+        <!--<input type="hidden" name="utente_id" ng-model="utente_id" value="0">-->
+        
+        <button class="button button-full button-balanced" ng-click="saveTravel()" ng-disa_bled="newTravelForm.$invalid">
+          Save
+        </button>
+    </ng-form>
+    <!--
+    partenza: {{newTravel.partenza.$valid}}<br />
+    D partenza: {{newTravel.data_partenza.$valid}}<br />
+    H partenza: {{newTravel.ora_partenza.$valid}}<br />
+    
+    arrivo: {{newTravel.arrivo.$valid}}<br />
+    D arrivo: {{newTravel.data_arrivo.$valid}}<br />
+    H arrivo: {{newTravel.ora_arrivo.$valid}}<br />
+    
+    numero_passeggeri: {{newTravel.numero_passeggeri.$valid}}<br />
+    numero_bagagli: {{newTravel.numero_bagagli.$valid}}<br />
+    H arrivo: {{newTravel.ora_arrivo.$valid}}<br />
+    
+    <!--
+    partenza 	character varying(50) 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+data_partenza 	date 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+ora_partenza 	time without time zone 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+arrivo 	character varying(50) 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+data_arrivo 	date 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+ora_arrivo 	time without time zone 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+is_richiesta 	boolean 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+numero_passeggeri 	integer 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+numero_bagagli 	integer 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+is_fumatore 	boolean 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+costo 	integer 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+valuta 	character varying(10) 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+tempo_totale 	character varying(10) 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+km_totale 	character varying(10) 	
+NOT NULL
+			Visualizza 	Modifica 	Privilegi 	Elimina 	
+utente_id
+    -->
+  </ion-content>
+</ion-view>

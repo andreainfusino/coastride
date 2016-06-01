@@ -1,13 +1,23 @@
 <ion-view view-title="Travels">
   <ion-content>
-    <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="travel in travels" type="item-text-wrap" href="#/tab/travel/{{travel.id}}">
-        <h3>{{travel.from}} {{travel.to}} <br />{{travel.date}}</h3>
-        <i class="icon ion-chevron-right icon-accessory"></i>
+    <ion-refresher
+        pulling-text="Pull to refresh..."
+        on-refresh="doRefresh()">
+    </ion-refresher>
+    <div class="button-bar">
+      <a class="button button-full" href="#/tab/travels-new">New</a>
+      <a class="button button-full" href="#/tab/travels-archive">My travels</a>
+      <a class="button button-full" href="#/tab/travels-joined">Joined</a>
+    </div>
 
-        <ion-option-button class="button-assertive" ng-click="remove(travel)">
-          Delete
-        </ion-option-button>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="travel in travels" type="item-text-wrap" href="#/tab/travels-view/{{travel.id}}">
+        <h3>
+        	Da "{{travel.partenza}}" alle {{travel.ora_partenza | date: hourFormat}} <br />
+            a "{{travel.arrivo}}" alle {{travel.ora_arrivo | date: hourFormat}} <br />
+            il {{travel.data_partenza | date:dateFormat}}
+        </h3>
+        <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
     </ion-list>
   </ion-content>

@@ -1,0 +1,66 @@
+<ion-view view-title="View Travel">
+  <ion-content>
+
+    	<div class="list" ng-controller="TravelCtrl">
+            <div class="item item-divider">
+            Departure
+            </div>
+            
+            <div class="row">
+                <div class="col col-33">
+                    {{travel.partenza}}
+                </div>
+                <div class="col col-33">
+                    {{travel.data_partenza | date: dateFormat}}
+                </div>
+                <div class="col col-33">
+                    {{travel.ora_partenza | date: hourFormat}}
+                </div>
+            </div>
+        </div>
+        
+        <div class="list">
+            <div class="item item-divider">
+            Arrival
+            </div>
+            <div class="row">
+                <div class="col col-33">
+                    {{travel.arrivo}}
+                </div>
+                <div class="col col-33">
+                    {{travel.data_arrivo | date: dateFormat}}
+                </div>
+                <div class="col col-33">
+                    {{travel.ora_arrivo | date: hourFormat}}
+                </div>
+            </div>
+        </div>
+        
+        <div class="list">
+            <div class="item item-divider">
+            Details
+            </div>
+            <div class="row">
+                <div class="col col-50">
+                    Passeggeri
+                </div>
+                <div class="col col-50">
+					Bagagli
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-50">
+                    {{travel.numero_passeggeri}}
+                </div>
+                <div class="col col-50">
+                    {{travel.numero_bagagli}}
+                </div>
+            </div>
+        </div>
+        
+        <button class="button button-full button-positive" ng-click="joinTravel()">
+          Join this travel!
+        </button>
+  
+  </ion-content>
+</ion-view>

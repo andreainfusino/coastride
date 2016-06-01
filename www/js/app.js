@@ -59,6 +59,42 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
+  .state('tab.travels-new', {
+      url: '/travels-new',
+      views: {
+        'tab-travels': {
+          templateUrl: 'templates/travels-new.html',
+          controller: 'TravelsCtrl'
+        }
+      }
+    })
+  .state('tab.travels-view', {
+      url: '/travels-view/:travelId',
+      views: {
+        'tab-travels': {
+          templateUrl: 'templates/travels-view.html',
+          controller: 'TravelCtrl'
+        }
+      }
+    })
+  .state('tab.travels-archive', {
+      url: '/travels-archive',
+      views: {
+        'tab-travels': {
+          templateUrl: 'templates/travels-archive.html',
+          controller: 'TravelsCtrl'
+        }
+      }
+    })
+  .state('tab.travels-joined', {
+      url: '/travels-joined',
+      views: {
+        'tab-travels': {
+          templateUrl: 'templates/travels-joined.html',
+          controller: 'TravelsCtrl'
+        }
+      }
+    })
   
   .state('tab.chats', {
       url: '/chats',

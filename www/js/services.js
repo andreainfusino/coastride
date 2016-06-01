@@ -2,7 +2,7 @@ angular.module('starter.services', [])
 
 .constant('ApiEndpoint', {
 	loginUrl: 'http://localhost:8100/api',
-	rest: 'http://localhost:8100/rest'  
+	rest: 'http://localhost:8100/rest'
 })
 
 .factory('$localstorage', ['$window', function($window) {
@@ -21,6 +21,22 @@ angular.module('starter.services', [])
       }
     }
 }])
+
+.factory('MyDateUtil', ['$window', function($window) {
+	return {
+		getYYYYMMDD: function(dateValue, separator) {
+			if (undefined == separator)
+			{
+				separator = '-';
+			}			
+			data_partenza_anno = dateValue.getFullYear();
+			data_partenza_mese = ((dCurr = dateValue.getMonth()*1+1) < 10 ? '0'+dCurr : dCurr);
+			data_partenza_giorno = ((dCurr = dateValue.getDate()*1) < 10 ? '0'+dCurr : dCurr);
+			
+			return data_partenza_anno+""+separator+data_partenza_mese+""+separator+data_partenza_giorno;
+		}
+	}
+}])
   
 .factory('Home', function($http, $localstorage, ApiEndpoint) {
 	return {
@@ -31,48 +47,81 @@ angular.module('starter.services', [])
 					username: username, 
 					password: password
 				};
-			console.log('ApiEndpoint', ApiEndpoint.loginUrl);
-			console.log('document.cookie', document.cookie);
-			console.log(postData);
 			return $http
 				.post(ApiEndpoint.loginUrl, postData)
-				.then(function(response){
-					console.log('login response:', response);
-					return response;
-				});
-				
-				
+				.then(
+					function(response)
+					{
+						//console.log('service success response:', response);
+						$http.defaults.headers.common['Authorization'] = 'Token ' + response.data.token
+						return response;
+					},
+					function(error)
+					{
+						//console.log('service error response:', error.data);
+						return error;
+					}
+				);
+		},
+		getUserId: function(token)
+		{
+			alert(ApiEndpoint.rest+'/users/'+token+'/');
+			return $http({
+				method: 'GET',
+				url: ApiEndpoint.rest+'/users/'+token+'/'
+			}).then(function successCallback(response) {
+				return response.data;
+			}, function errorCallback(response) {
+				return false;
+			});
 		},
 		logout: function(data)
 		{
-		  
+			$localstorage.set('token', '');
 		}
 	}
 })
 
-.factory('Travels', function($http, $localstorage) {
+.factory('Travels', function($http, $localstorage, ApiEndpoint) {
 	return {
 		all: function()
 		{
-			$http({
+			return $http({
 				method: 'GET',
-				url: 'http://coastride.andreainfusino.com/coastride/passaggi/'
+				url: ApiEndpoint.rest+'/passaggi/'
 			}).then(function successCallback(response) {
-				// this callback will be called asynchronously
-				// when the response is available
-				console.log(response);
+				return response.data;
 			}, function errorCallback(response) {
-				// called asynchronously if an error occurs
-				// or server returns response with an error status.
+				return false;
 			});
 		},
-		create: function(data)
+		create: function(postData)
 		{
-		  
+			$http.defaults.headers.common['Authorization'] = 'Token ' + $localstorage.get('token');
+			console.log($http.defaults.headers.common['Authorization'], postData);
+			return $http
+				.post(ApiEndpoint.rest+'/passaggi/', postData)
+				.then(
+					function(response)
+					{
+						return response;
+					},
+					function(error)
+					{
+						return error;
+					}
+				);
 		},
 		read: function(id)
 		{
-			
+			return $http({
+				method: 'GET',
+				url: ApiEndpoint.rest+'/passaggio/'+id+'/'
+			}).then(function successCallback(response) {
+				return response.data;
+			}, function errorCallback(response) {
+				return false;
+			});
 		},
 		update: function(id, data)
 		{
@@ -81,8 +130,7 @@ angular.module('starter.services', [])
 		del: function(id)
 		{
 			
-		},
-		
+		},		
 		joinTravel: function(id)
 		{
 			
