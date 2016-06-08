@@ -1,4 +1,4 @@
-<ion-view view-title="Travels">
+<ion-view view-title="Travels" ng-init="allTravels()">
   <ion-content>
     <ion-refresher
         pulling-text="Pull to refresh..."
@@ -9,16 +9,13 @@
       <a class="button button-full" href="#/tab/travels-archive">My travels</a>
       <a class="button button-full" href="#/tab/travels-joined">Joined</a>
     </div>
+	<!--
+    <pre>Sorting predicate = {{predicate}}; reverse = {{reverse}}</pre>
+    <hr/>
+    <button ng-click="predicate=''">Set to unsorted</button>
+    -->
+    
+    <list-travels></list-travels>
 
-    <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="travel in travels" type="item-text-wrap" href="#/tab/travels-view/{{travel.id}}">
-        <h3>
-        	Da "{{travel.partenza}}" alle {{travel.ora_partenza | date: hourFormat}} <br />
-            a "{{travel.arrivo}}" alle {{travel.ora_arrivo | date: hourFormat}} <br />
-            il {{travel.data_partenza | date:dateFormat}}
-        </h3>
-        <i class="icon ion-chevron-right icon-accessory"></i>
-      </ion-item>
-    </ion-list>
   </ion-content>
 </ion-view>

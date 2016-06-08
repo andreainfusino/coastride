@@ -22,6 +22,25 @@ angular.module('starter.services', [])
     }
 }])
 
+
+.factory('Logging', ['$window', function($window, $localstorage) {
+    return {
+      isLogged: function($state, token) {
+        if (token)
+		{
+			console.log('success!');
+			return true;
+		}
+		else
+		{
+			console.log('Please log in');
+			$state.go("tab.dash");
+			return false;
+		}
+      }
+    }
+}])
+
 .factory('MyDateUtil', ['$window', function($window) {
 	return {
 		getYYYYMMDD: function(dateValue, separator) {
@@ -65,7 +84,6 @@ angular.module('starter.services', [])
 		},
 		getUserId: function(token)
 		{
-			alert(ApiEndpoint.rest+'/users/'+token+'/');
 			return $http({
 				method: 'GET',
 				url: ApiEndpoint.rest+'/users/'+token+'/'
@@ -82,7 +100,7 @@ angular.module('starter.services', [])
 	}
 })
 
-.factory('Travels', function($http, $localstorage, ApiEndpoint) {
+.factory('Travels', function($http, $localstorage, ApiEndpoint, MyDateUtil) {
 	return {
 		all: function()
 		{
@@ -98,7 +116,6 @@ angular.module('starter.services', [])
 		create: function(postData)
 		{
 			$http.defaults.headers.common['Authorization'] = 'Token ' + $localstorage.get('token');
-			console.log($http.defaults.headers.common['Authorization'], postData);
 			return $http
 				.post(ApiEndpoint.rest+'/passaggi/', postData)
 				.then(
@@ -131,10 +148,53 @@ angular.module('starter.services', [])
 		{
 			
 		},		
-		joinTravel: function(id)
+		joinTravel: function(travel, user)
 		{
-			
-		}
+			postData = 
+			{
+				passaggio: travel,
+				user: user*1,
+				data_partecipazione: MyDateUtil.getYYYYMMDD(new Date(), '-')
+			};
+			return $http
+			.post(ApiEndpoint.rest+'/partecipazioni/', postData)
+			.then(
+				function(response)
+				{
+					return response;
+				},
+				function(error)
+				{
+					return error;
+				}
+			);
+		},
+		joinedTravels: function(user_id)
+		{
+			return $http({
+				method: 'GET',
+				url: ApiEndpoint.rest+'/passaggio/'+id+'/'
+			}).then(function successCallback(response) {
+				return response.data;
+			}, function errorCallback(response) {
+				console.log(response);
+				return false;
+			});
+		},
+		myTravels: function(user_id)
+		{
+			console.log(ApiEndpoint.rest+'/miei-passaggi/'+user_id+'/');
+			return $http({
+				method: 'GET',
+				url: ApiEndpoint.rest+'/miei-passaggi/'+user_id+'/'
+			}).then(function successCallback(response) {
+				console.log(response);
+				return response.data;
+			}, function errorCallback(response) {
+				console.log(response);
+				return false;
+			});
+		},
 	}
 })
 

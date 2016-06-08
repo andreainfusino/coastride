@@ -1,1 +1,6 @@
-/* Empty. Add your own CSS if you like */
+.sortorder:after {
+  content: '\25b2';
+}
+.sortorder.reverse:after {
+  content: '\25bc';
+}

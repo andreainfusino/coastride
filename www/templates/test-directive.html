@@ -1,0 +1,17 @@
+<div class="button-bar">
+    <a class="button button-small button-calm" ng-click="order('partenza')">Partenza</a><span class="sortorder" ng-show="predicate === 'partenza'" ng-class="{reverse:reverse}"></span>
+    <a class="button button-small button-calm" ng-click="order('arrivo')">Arrivo</a><span class="sortorder" ng-show="predicate === 'arrivo'" ng-class="{reverse:reverse}"></span>
+    <a class="button button-small button-calm" ng-click="order('ora_partenza')">Ora Partenza</a><span class="sortorder" ng-show="predicate === 'ora_partenza'" ng-class="{reverse:reverse}"></span>
+    <a class="button button-small button-calm" ng-click="order('data_partenza')">Data Partenza</a><span class="sortorder" ng-show="predicate === 'data_partenza'" ng-class="{reverse:reverse}"></span>
+</div>
+
+<ion-list>
+  <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="travel in travels | orderBy:predicate:reverse" type="item-text-wrap" href="#/tab/travels-view/{{travel.id}}">
+    <h3>
+        Da "{{travel.partenza}}" alle {{travel.ora_partenza | date: hourFormat}} <br />
+        a "{{travel.arrivo}}" alle {{travel.ora_arrivo | date: hourFormat}} <br />
+        il {{travel.data_partenza | date:dateFormat}}
+    </h3>
+    <i class="icon ion-chevron-right icon-accessory"></i>
+  </ion-item>
+</ion-list>

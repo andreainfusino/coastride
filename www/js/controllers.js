@@ -4,16 +4,9 @@ angular.module('starter.controllers', ['starter.services'])
 	dateFormat: "dd/MM/y"
 })
 
-.controller('HomeCtrl', function($scope, Home, $localstorage) {
+.controller('HomeCtrl', function($scope, Home, $localstorage, $state, Logging) {
 	$scope.$on('$ionicView.enter', function() {
-		if ($localstorage.get('token'))
-		{
-			console.log('success!');
-		}
-		else
-		{
-			console.log('Please log in');
-		}
+		Logging.isLogged($state, $localstorage.get('token'));
 	})
 	$scope.isLogged = function()
 	{
@@ -50,20 +43,9 @@ angular.module('starter.controllers', ['starter.services'])
 	}
 })
 
-.controller('TravelsCtrl', function($scope, Travels, $localstorage, DateTimeFormats, MyDateUtil) {
+.controller('TravelsCtrl', function($scope, Travels, $localstorage, DateTimeFormats, MyDateUtil, $state, Logging) {
 	$scope.$on('$ionicView.enter', function() {
-		if ($localstorage.get('token'))
-		{
-			console.log('success!');
-			Travels.all()
-			.then(function(response){
-				$scope.travels = response;
-			});
-		}
-		else
-		{
-			console.log('Please log in');
-		}
+		Logging.isLogged($state, $localstorage.get('token'));
 	})
 	
 	$scope.hourFormat = DateTimeFormats.hourFormat;
@@ -74,13 +56,39 @@ angular.module('starter.controllers', ['starter.services'])
 		Travels.deleteTravel(travel);
 	};
 	
+	$scope.predicate = 'data_partenza';
+	$scope.reverse = false;
+	$scope.order = function(predicate) {
+		$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+		$scope.predicate = predicate;
+	};
+	
 	$scope.doRefresh = function() {
+		$scope.predicate = 'data_partenza';
+		$scope.reverse = true;
+	
 		Travels.all()
 		.then(function(response){
 			$scope.travels = response;
 		})
 		.finally(function(){
 			$scope.$broadcast('scroll.refreshComplete');
+		});
+	}
+	
+	$scope.allTravels = function()
+	{
+		Travels.all()
+		.then(function(response){
+			$scope.travels = response;
+		});
+	}
+	
+	$scope.myTravels = function()
+	{
+		Travels.myTravels($localstorage.get('user_id'))
+		.then(function(response){
+			$scope.travels = response;
 		});
 	}
 	
@@ -103,6 +111,9 @@ angular.module('starter.controllers', ['starter.services'])
 			function(success)
 			{
 				console.log(success);
+				alert('Creation successful!');
+				$scope.newTravel.data = {};
+				$state.go("tab.travels");
 			},
 			function(error)
 			{
@@ -110,21 +121,35 @@ angular.module('starter.controllers', ['starter.services'])
 			}
 		);
 	}
-
+	
 })
 
-.controller('TravelCtrl', function($scope, $stateParams, Travels, $localstorage, DateTimeFormats) {
+.controller('TravelCtrl', function($scope, $stateParams, Travels, $localstorage, DateTimeFormats, Logging, $state) {
+	$scope.$on('$ionicView.enter', function() {
+		Logging.isLogged($state, $localstorage.get('token'));
+	})
+
 	$scope.hourFormat = DateTimeFormats.hourFormat;
 	$scope.dateFormat = DateTimeFormats.dateFormat;
 	
 	Travels.read($stateParams.travelId)
 	.then(function(success){
 		$scope.travel = success;
+		$scope.isMyTravel = function()
+		{
+			console.log($scope.travel.utente, $localstorage.get('user_id'));
+			return $scope.travel.utente*1 == $localstorage.get('user_id')*1;
+		}
 	});
+	
 	
 	$scope.joinTravel = function()
 	{
 		console.log($scope.travel.id);
+		Travels.joinTravel($scope.travel.id, $localstorage.get('user_id'))
+		.then(function(success){
+			console.log(success);
+		});
 	}
 })
 
@@ -143,4 +168,13 @@ angular.module('starter.controllers', ['starter.services'])
   $scope.settings = {
     enableFriends: true
   };
-});
+})
+
+
+.directive('listTravels', function() {
+	return {
+		restrict: 'E',
+		templateUrl: 'templates/directive-list-travels.html'
+	};
+})
+;
